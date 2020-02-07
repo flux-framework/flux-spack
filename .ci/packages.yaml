@@ -1,0 +1,17 @@
+packages:
+  openssl:
+    buildable: False
+    paths:
+      openssl@1.1.1: /usr
+  cmake:
+    buildable: False
+    paths:
+      cmake@3.12.4: /usr
+  perl:
+    buildable: False
+    paths:
+      perl@5.26.1: /usr
+  findutils:
+    buildable: False
+    paths:
+      findutils@4.6.0: /usr
