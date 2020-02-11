@@ -34,9 +34,18 @@ if [ -z "$SPEC" ]; then
     exit 1
 fi
 
+# Add this git repo as a spack repo
+bin/spack repo add $GITHUB_WORKSPACE
+
+# Print repos information
+bin/spack repo list
+
 # Print compiler information
 bin/spack config get compilers
 
+# Print spack spec
+bin/spack spec -l flux-sched@${SPEC}
+
 # Run some build smoke tests
-bin/spack install --test=root --show-log-on-error flux-core@${SPEC}
-bin/spack install --test=root --show-log-on-error flux-sched@${SPEC}
+bin/spack install --test=root --show-log-on-error flux.flux-core@${SPEC}
+bin/spack install --test=root --show-log-on-error flux.flux-sched@${SPEC}
