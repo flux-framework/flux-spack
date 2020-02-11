@@ -106,6 +106,10 @@ class FluxSched(AutotoolsPackage):
     def lua_lib_dir(self):
         return os.path.join('lib', 'lua', str(self.lua_version))
 
+    def check(self):
+        with working_dir(self.build_directory):
+            self.make('check')
+
     def setup_run_environment(self, env):
         env.prepend_path(
             'LUA_PATH',
