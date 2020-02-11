@@ -52,5 +52,10 @@ jobs:
     - name: Run the build test
       run: |
         . spack/share/spack/setup-env.sh
-        SPEC=${{ matrix.package }} ./.ci/run-build-tests
+        SPEC=${{ matrix.package }} ./.ci/run-build-tests.sh
         ccache -s
+    - name: Dump flux logs
+      if: failure()
+      run: |
+        . spack/share/spack/setup-env.sh
+        ./.ci/dump-build-logs.sh
