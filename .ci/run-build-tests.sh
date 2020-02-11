@@ -34,18 +34,23 @@ if [ -z "$SPEC" ]; then
     exit 1
 fi
 
+bin/spack bootstrap
+source $SPACK_ROOT/share/spack/setup-env.sh
+
 # Add this git repo as a spack repo
-bin/spack repo add $GITHUB_WORKSPACE
+spack repo add $GITHUB_WORKSPACE
 
 # Print repos information
-bin/spack repo list
+spack repo list
 
 # Print compiler information
-bin/spack config get compilers
+spack config get compilers
 
 # Print spack spec
-bin/spack spec -l flux-sched@${SPEC}
+spack spec -l flux-sched@${SPEC}
 
 # Run some build smoke tests
-bin/spack install --test=root --show-log-on-error flux.flux-core@${SPEC}
-bin/spack install --test=root --show-log-on-error flux.flux-sched@${SPEC}
+spack install --test=root --show-log-on-error flux.flux-core@${SPEC}
+spack load flux-core@${SPEC}
+flux keygen # generate keys so that bootstrapping in flux-sched tests works
+spack install --test=root --show-log-on-error flux.flux-sched@${SPEC}
