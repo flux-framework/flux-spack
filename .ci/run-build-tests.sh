@@ -34,7 +34,7 @@ if [ -z "$SPEC" ]; then
     exit 1
 fi
 
-bin/spack bootstrap
+bin/spack -d bootstrap -v
 source $SPACK_ROOT/share/spack/setup-env.sh
 
 # Add this git repo as a spack repo
@@ -63,6 +63,9 @@ spack config get compilers
 
 # Print spack spec
 spack spec -l flux-sched@${SCHED_SPEC}
+
+# Print filesystem info (make sure flock'ing is supported)
+mount
 
 # Run some build smoke tests
 spack install --test=root --show-log-on-error flux.flux-core@${CORE_SPEC}
