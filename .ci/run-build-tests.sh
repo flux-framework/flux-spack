@@ -43,14 +43,29 @@ spack repo add $GITHUB_WORKSPACE
 # Print repos information
 spack repo list
 
+# Get the latest version (now that we've added the local repo)
+if [[ "$SPEC" == "latest-tag" ]]; then
+    CORE_SPEC=$(spack versions -s flux.flux-core | grep '[0-9.]' | head -n1)
+    SCHED_SPEC=$(spack versions -s flux.flux-sched | grep '[0-9.]' | head -n1)
+elif [[ "$SPEC" == "master" ]]; then
+    CORE_SPEC="$SPEC"
+    SCHED_SPEC="$SPEC"
+else
+    echo "Unrecognized SPEC: $SPEC"
+    exit 1
+fi
+
+# Print the SPEC
+echo "Spec: $SPEC"
+
 # Print compiler information
 spack config get compilers
 
 # Print spack spec
-spack spec -l flux-sched@${SPEC}
+spack spec -l flux-sched@${SCHED_SPEC}
 
 # Run some build smoke tests
-spack install --test=root --show-log-on-error flux.flux-core@${SPEC}
-spack load flux-core@${SPEC}
+spack install --test=root --show-log-on-error flux.flux-core@${CORE_SPEC}
+spack load flux-core@${CORE_SPEC}
 flux keygen # generate keys so that bootstrapping in flux-sched tests works
-spack install --test=root --show-log-on-error flux.flux-sched@${SPEC}
+spack install --test=root --show-log-on-error flux.flux-sched@${SCHED_SPEC}
