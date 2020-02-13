@@ -71,4 +71,4 @@ mount
 spack install --test=root --show-log-on-error flux.flux-core@${CORE_SPEC}
 spack load flux-core@${CORE_SPEC}
 flux keygen # generate keys so that bootstrapping in flux-sched tests works
-spack install --test=root --show-log-on-error flux.flux-sched@${SCHED_SPEC}
+spack install --test=root --show-log-on-error -j1 flux.flux-sched@${SCHED_SPEC}
