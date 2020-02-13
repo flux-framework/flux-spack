@@ -122,10 +122,6 @@ class FluxCore(AutotoolsPackage):
     def lua_lib_dir(self):
         return os.path.join('lib', 'lua', str(self.lua_version))
 
-    def check(self):
-        with working_dir(self.build_directory):
-            self.make('check')
-
     def setup_build_environment(self, env):
         #  Ensure ./fluxometer.lua can be found during flux's make check
         env.append_path('LUA_PATH', './?.lua', separator=';')
