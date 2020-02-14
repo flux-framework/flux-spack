@@ -67,6 +67,9 @@ spack spec -l flux-sched@${SCHED_SPEC}
 # Print filesystem info (make sure flock'ing is supported)
 mount
 
+# Make sure that the flux test harness produces log files
+export FLUX_TESTS_LOGFILE=t
+
 # Run some build smoke tests
 spack install --test=root --show-log-on-error flux.flux-core@${CORE_SPEC}
 spack load flux-core@${CORE_SPEC}
