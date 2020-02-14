@@ -41,7 +41,7 @@ jobs:
         python-version: 3.8
     - name: Install System Packages
       run: |
-        sudo apt-get -yqq install git ccache openssl libssl-dev gfortran perl perl-base findutils
+        sudo apt-get -yqq install git ccache openssl libssl-dev gfortran perl perl-base findutils libc6-dbg
     - name: Clone spack
       run: |
         git clone https://github.com/spack/spack.git
