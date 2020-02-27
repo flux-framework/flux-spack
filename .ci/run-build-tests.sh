@@ -34,14 +34,14 @@ if [ -z "$SPEC" ]; then
     exit 1
 fi
 
-bin/spack -d bootstrap -v
-source $SPACK_ROOT/share/spack/setup-env.sh
+#bin/spack -d bootstrap -v
+#source $SPACK_ROOT/share/spack/setup-env.sh
 
 # Add this git repo as a spack repo
-spack repo add $GITHUB_WORKSPACE
+bin/spack repo add $GITHUB_WORKSPACE
 
 # Print repos information
-spack repo list
+bin/spack repo list
 
 # Get the latest version (now that we've added the local repo)
 if [[ "$SPEC" == "latest-tag" ]]; then
@@ -59,10 +59,10 @@ fi
 echo "Spec: $SPEC"
 
 # Print compiler information
-spack config get compilers
+bin/spack config get compilers
 
 # Print spack spec
-spack spec -l flux-sched@${SCHED_SPEC}
+bin/spack spec -l flux-sched@${SCHED_SPEC}
 
 # Print filesystem info (make sure flock'ing is supported)
 mount
@@ -71,7 +71,7 @@ mount
 export FLUX_TESTS_LOGFILE=t
 
 # Run some build smoke tests
-spack install --test=root --show-log-on-error flux.flux-core@${CORE_SPEC}
-spack load flux-core@${CORE_SPEC}
-flux keygen # generate keys so that bootstrapping in flux-sched tests works
-spack install --test=root --show-log-on-error -j1 flux.flux-sched@${SCHED_SPEC}
+bin/spack install --test=root --show-log-on-error flux.flux-core@${CORE_SPEC}
+# generate keys so that bootstrapping in flux-sched tests works
+$(bin/spack location -i flux-core@${CORE_SPEC})/bin/flux keygen
+bin/spack install --test=root --show-log-on-error -j1 flux.flux-sched@${SCHED_SPEC}
