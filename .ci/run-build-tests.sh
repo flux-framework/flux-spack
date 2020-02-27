@@ -54,6 +54,8 @@ else
     echo "Unrecognized SPEC: $SPEC"
     exit 1
 fi
+CORE_SPEC=${CORE_SPEC}"^flux.lua@5.2.4"
+SCHED_SPEC=${SCHED_SPEC}"^flux.lua@5.2.4"
 
 # Print the SPEC
 echo "Spec: $SPEC"
