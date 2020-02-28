@@ -15,6 +15,7 @@ class FluxCore(AutotoolsPackage):
     git      = "https://github.com/flux-framework/flux-core.git"
 
     version('master', branch='master')
+    version('0.16.0', sha256='1582f7fb4d2313127418c34de7c9ce4f5fef00622d19cedca7bed929f4709f10')
     version('0.15.0', sha256='51bc2eae69501f802459fc82f191eb5e8ae0b4f7e9e77ac18543a850cc8445f5')
     version('0.11.3', sha256='91b5d7dca8fc28a77777c4e4cb8717fc3dc2c174e70611740689a71901c6de7e')
     version('0.11.2', sha256='ab8637428cd9b74b2dff4842d10e0fc4acc8213c4e51f31d32a4cbfbdf730412')
