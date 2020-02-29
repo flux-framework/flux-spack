@@ -64,7 +64,7 @@ echo "Spec: $SPEC"
 bin/spack config get compilers
 
 # Print spack spec
-bin/spack spec -l flux-sched@${SCHED_SPEC}
+bin/spack spec -Nl flux.flux-sched@${SCHED_SPEC}
 
 # Print filesystem info (make sure flock'ing is supported)
 mount
