@@ -20,7 +20,7 @@ jobs:
           - master
           - latest-tag
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: always-upload-cache
       uses: pat-s/always-upload-cache@v1.1.4
       with:
