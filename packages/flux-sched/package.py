@@ -34,6 +34,7 @@ class FluxSched(AutotoolsPackage):
     depends_on("yaml-cpp", when="@0.7.0:")
     depends_on("libuuid")
     depends_on("pkgconfig")
+    depends_on("readline")
 
     depends_on("flux-core", type=('build', 'link', 'run'))
     depends_on("flux-core+cuda", when='+cuda')
