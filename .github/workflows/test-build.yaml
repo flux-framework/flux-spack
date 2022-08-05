@@ -1,0 +1,51 @@
+name: Test Build
+
+on:
+  pull_request: []
+  schedule:
+    - cron:  '0 2 * * *'  
+
+jobs:
+  flux-core:
+    name: Test Flux Builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Spack
+        run: |
+          git clone --depth 1 https://github.com/spack/spack /opt/spack
+          echo "/opt/spack/bin" >> $GITHUB_PATH
+          export PATH="/opt/spack/bin:$PATH"
+          spack external find
+
+      - name: Derive Microarchitecture
+        run: |
+          pip install archspec
+          runner_cpu=$(archspec cpu)
+          echo "runner_cpu=${runner_cpu}" >> $GITHUB_ENV
+
+      - name: Clingo Cache
+        uses: actions/cache@v3
+        with:
+          path: /opt/spack/opt/spack
+          key: ${{ runner.os }}-${{ env.runner_cpu }}-clingo
+
+      - name: Install Clingo
+        run: spack install clingo
+
+      - name: Flux Core Build Cache
+        uses: actions/cache@v3
+        with:
+          path: /opt/spack/opt/spack
+          key: ${{ runner.os }}-${{ env.runner_cpu }}-flux-core
+
+      - name: Flux Core Spack Build
+        uses: syspack/pakages/action/build@main
+        with:
+          user: ${{ github.actor }}
+          builder: spack
+          package: flux-core
+          repo: .
+          token: ${{ secrets.GITHUB_TOKEN }}
