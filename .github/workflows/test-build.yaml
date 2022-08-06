@@ -43,11 +43,11 @@ jobs:
 
       - name: Install pakages
         run: |
-            git clone -b add/install https://github.com/syspack/pakages
-            cd pakages
-            pip install .[all]
-            cd ../
-            rm -rf pakages
+           git clone -b add/install https://github.com/syspack/pakages
+           cd pakages
+           pip install .[all]
+           cd ../
+           rm -rf pakages
 
       - name: Flux Core Spack Build
         uses: syspack/pakages/action/build@add/install
