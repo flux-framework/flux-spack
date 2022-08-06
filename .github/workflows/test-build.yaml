@@ -42,15 +42,10 @@ jobs:
           key: ${{ runner.os }}-${{ env.runner_cpu }}-flux-core
 
       - name: Install pakages
-        run: |
-           git clone -b add/install https://github.com/syspack/pakages
-           cd pakages
-           pip install .[all]
-           cd ../
-           rm -rf pakages
+        run: pip install pakages[all]
 
       - name: Flux Core Spack Build
-        uses: syspack/pakages/action/build@add/install
+        uses: syspack/pakages/action/build@main
         with:
           user: ${{ github.actor }}
           token: ${{ secrets.GITHUB_TOKEN }}
