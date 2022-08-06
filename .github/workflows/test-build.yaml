@@ -41,11 +41,19 @@ jobs:
           path: /opt/spack/opt/spack
           key: ${{ runner.os }}-${{ env.runner_cpu }}-flux-core
 
+      - name: Install pakages
+        run: |
+            git clone -b add/install https://github.com/syspack/pakages
+            cd pakages
+            pip install .[all]
+            cd ../
+            rm -rf pakages
+
       - name: Flux Core Spack Build
-        uses: syspack/pakages/action/build@main
+        uses: syspack/pakages/action/build@add/install
         with:
           user: ${{ github.actor }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           builder: spack
           package: flux-core
           repo: .
-          token: ${{ secrets.GITHUB_TOKEN }}
