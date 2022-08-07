@@ -7,7 +7,7 @@ on:
 
     # This will run weekly on Wednesday to look for changes from spack to here
     schedule:
-      - cron:  '30 5,17 * * *'
+      - cron:  '0 10 * * 3'
 
 jobs:
   update-spack:
