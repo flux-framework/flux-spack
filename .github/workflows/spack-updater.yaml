@@ -1,0 +1,42 @@
+name: Spack Updater
+on:
+  push:
+    # This will look for changes in packages here to PR back to spack
+    branches:
+      - main
+
+    # This will run weekly on Wednesday to look for changes from spack to here
+    schedule:
+      - cron:  '0 10 * * 3'
+
+jobs:
+  update-spack:
+    name: Update To and From Spack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Spack Update
+        uses: sciworks/spack-updater@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          user: ${{ github.actor }}
+          repo: .        
+          # TODO this can eventually be a matrix
+          package: flux-core
+
+          # Spack repository to use to compare
+          upstream: https://github.com/spack/spack
+
+          # Branch to spack (updates to spack)
+          branch: develop
+
+          # Local branch to updatee here from spack (PR)
+          local_branch: main
+
+          # Open a pull request here when we find changes to spack
+          pull_request: true
+
+          # Open an issue here to trigger an issue -> PR to update spack
+          # requires https://github.com/spack/spack/pull/31975
+          open_issue: true
