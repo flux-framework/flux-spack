@@ -49,7 +49,7 @@ def update_package(package_dir, latest):
     download_path = os.path.join(tmp, "%s-%s.tar.gz" % (package, tag))
     version_file = os.path.join(package_dir, "VERSION")
 
-    tarball_url = f"https://github.com/flux-framework/{repo}/releases/download/{tag}/flux-core-{naked_version}.tar.gz"
+    tarball_url = f"https://github.com/flux-framework/{package}/releases/download/{tag}/flux-core-{naked_version}.tar.gz"
     response = requests.get(tarball_url, stream=True)
     if response.status_code == 200:
         with open(download_path, "wb") as f:
