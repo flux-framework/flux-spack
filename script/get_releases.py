@@ -102,8 +102,8 @@ def main(package_dir):
     print(f"New version {latest['tag_name']} detected!")
     update_package(package_dir, latest)
     tag = latest['tag_name']
-    print(f"::set-output name=version::${tag}")
-
+    print(f"::set-output name=version::{tag}")
+    print(f"::set-output name=package::{package}@{tag}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

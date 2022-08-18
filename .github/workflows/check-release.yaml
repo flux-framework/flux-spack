@@ -9,11 +9,52 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         id: check
         run: python script/get_releases.py packages/flux-core
+
+      - name: Install Spack
+        run: |
+          git clone --depth 1 https://github.com/spack/spack /opt/spack
+          echo "/opt/spack/bin" >> $GITHUB_PATH
+          export PATH="/opt/spack/bin:$PATH"
+          spack external find
+
+      - name: Derive Microarchitecture
+        run: |
+          pip install archspec
+          runner_cpu=$(archspec cpu)
+          echo "runner_cpu=${runner_cpu}" >> $GITHUB_ENV
+
+      - name: Clingo Cache
+        uses: actions/cache@v3
+        with:
+          path: /opt/spack/opt/spack
+          key: ${{ runner.os }}-${{ env.runner_cpu }}-clingo
+
+      - name: Install Clingo
+        run: spack install clingo
+
+      - name: Flux Core Build Cache
+        uses: actions/cache@v3
+        with:
+          path: /opt/spack/opt/spack
+          key: ${{ runner.os }}-${{ env.runner_cpu }}-flux-core
+
+      - name: Install pakages
+        run: pip install pakages[all]
+
+      - name: Flux Core Spack Build
+        uses: syspack/pakages/action/install@main
+        with:
+          user: ${{ github.actor }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          builder: spack
+          package: ${{ steps.check.outputs.package }}
+          repo: .
+
       - name: Commit latest release version
         if: steps.check.outputs.version != ''
         env:
@@ -36,7 +77,7 @@ jobs:
              printf "No changes\n"
           else
              printf "Changes\n"
-             git commit -m "Automated deployment to update software database $(date '+%Y-%m-%d')"
+             git commit -m "Automated deployment to flux package versions $(date '+%Y-%m-%d')"
              git push origin "${BRANCH_FROM}"
           fi
           echo "PULL_REQUEST_FROM_BRANCH=${BRANCH_FROM}" >> $GITHUB_ENV
