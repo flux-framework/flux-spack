@@ -13,8 +13,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Fetch release version
         run: |
-          curl -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest
-          curl -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest | \
+          curl -H "Authorization: token ${token}" \ 
+               -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest
+          curl -H "Authorization: token ${token}" -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest | \
           jq -r ".tag_name" > FLUX_CORE_VERSION
       - name: Check for modified files
         id: git-check
