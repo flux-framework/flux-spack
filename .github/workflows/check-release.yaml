@@ -13,7 +13,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update Version
         id: check
-        run: python script/get_releases.py flux-core
+        run: python script/get_releases.py packages/flux-core
       - name: Commit latest release version
         if: steps.check.outputs.version != ''
         env:
