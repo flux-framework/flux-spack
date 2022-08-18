@@ -13,10 +13,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Fetch release version
         run: |
-          curl -H "Authorization: token ${token}" \ 
-               -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest
-          curl -H "Authorization: token ${token}" -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest | \
-          jq -r ".tag_name" > FLUX_CORE_VERSION
+          curl -H "Authorization: token ${token}" -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest
+          curl -H "Authorization: token ${token}" -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest | jq -r ".tag_name" > FLUX_CORE_VERSION
       - name: Check for modified files
         id: git-check
         run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
