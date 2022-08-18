@@ -72,7 +72,7 @@ def update_package(package_dir, latest):
     write_file("\n".join(lines), package_file)
     write_file(naked_version, version_file)
     shutil.rmtree(tmp)
-
+    print(f"::set-output name=package::{package}@{naked_version}")
 
 def write_file(data, filename):
     with open(filename, "w") as fd:
@@ -103,7 +103,6 @@ def main(package_dir):
     update_package(package_dir, latest)
     tag = latest['tag_name']
     print(f"::set-output name=version::{tag}")
-    print(f"::set-output name=package::{package}@{tag}")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
