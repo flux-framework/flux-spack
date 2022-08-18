@@ -20,7 +20,7 @@ class FluxCore(AutotoolsPackage):
     maintainers = ["grondo"]
 
     version("master", branch="master")
-
+    version("0.41.0", sha256="3f3a6a8a1e7d2f326b0e684dcf70e4489076b3f52dd14480e2f33cfdaeba690a")
     version("0.40.0", sha256="b15996b6165f037e5a6c42ea277e2c1c56a4f4b6bf47334105e324dcfefbf6fa")
     version("0.39.0", sha256="ad55529fc3f056ac167b53b5bd489167c2ef218c3c49e721ad507a8ea9c409db")
     version("0.38.0", sha256="69d150c3d48b5985bca606e1a4de12282eb76233b6b730de1a9fff4136faf65f")
@@ -245,3 +245,4 @@ class FluxCore(AutotoolsPackage):
                 flags.append("-Wno-error=maybe-uninitialized")
 
         return (flags, None, None)
+
