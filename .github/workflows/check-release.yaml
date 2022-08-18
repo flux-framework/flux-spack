@@ -1,6 +1,5 @@
 name: Update with latest flux release
 on:
-  pull_request: []
   schedule:
     - cron:  '0 2 * * *'
 
