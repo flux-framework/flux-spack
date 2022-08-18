@@ -2,7 +2,7 @@ name: Update with latest flux release
 on:
   pull_request: []
   schedule:
-    - cron:  '0 10 * * *'
+    - cron:  '0 2 * * *'
 
 jobs:
   get-release-version:

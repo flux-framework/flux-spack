@@ -43,11 +43,14 @@ def update_package(package_dir, latest):
     version_file = os.path.join(package_dir, "VERSION")
 
     tag = latest["tag_name"]
+    naked_version = tag.replace("v", "")
+
     tmp = tempfile.mkdtemp()
     download_path = os.path.join(tmp, "%s-%s.tar.gz" % (package, tag))
     version_file = os.path.join(package_dir, "VERSION")
 
-    response = requests.get(latest["tarball_url"], stream=True)
+    tarball_url = f"https://github.com/flux-framework/{repo}/releases/download/{tag}/flux-core-{naked_version}.tar.gz"
+    response = requests.get(tarball_url, stream=True)
     if response.status_code == 200:
         with open(download_path, "wb") as f:
             f.write(response.raw.read())
@@ -56,7 +59,6 @@ def update_package(package_dir, latest):
     digest = get_sha256sum(download_path)
 
     # Create new line
-    naked_version = tag.replace("v", "")
     newline = '    version("%s", sha256="%s")' % (naked_version, digest)
 
     # Write new package file
@@ -73,6 +75,7 @@ def update_package(package_dir, latest):
     write_file(naked_version, version_file)
     shutil.rmtree(tmp)
     print(f"::set-output name=package::{package}@{naked_version}")
+
 
 def write_file(data, filename):
     with open(filename, "w") as fd:
@@ -101,8 +104,9 @@ def main(package_dir):
         return
     print(f"New version {latest['tag_name']} detected!")
     update_package(package_dir, latest)
-    tag = latest['tag_name']
+    tag = latest["tag_name"]
     print(f"::set-output name=version::{tag}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
