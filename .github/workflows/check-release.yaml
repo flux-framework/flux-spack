@@ -10,20 +10,35 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Fetch release version
-        run: |
-          curl -H "Authorization: token ${token}" -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest
-          curl -H "Authorization: token ${token}" -sL https://api.github.com/repos/flux-framework/flux-core/releases/latest | jq -r ".tag_name" > FLUX_CORE_VERSION
-      - name: Check for modified files
-        id: git-check
-        run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Version
+        id: check
+        run: python script/get_releases.py flux-core
       - name: Commit latest release version
-        if: steps.git-check.outputs.modified == 'true'
+        if: steps.check.outputs.version != ''
+        env:
+          version: ${{ steps.check.outputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "There are modified files"
-          cat FLUX_CORE_VERSION
-#          git config --global user.name 'github-actions'
-#          git config --global user.email 'github-actions@users.noreply.github.com'
-#          git commit -am "New release version"
-#          git push
+          printf "Found new version ${version}\n"
+          export BRANCH_FROM="release/${version}"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git branch
+          git checkout -b "${BRANCH_FROM}" || git checkout "${BRANCH_FROM}"
+          git branch
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git add packages/*
+          if git diff-index --quiet HEAD --; then
+             printf "No changes\n"
+          else
+             printf "Changes\n"
+             git commit -m "Automated deployment to update software database $(date '+%Y-%m-%d')"
+             git push origin "${BRANCH_FROM}"
+          fi
+          echo "PULL_REQUEST_FROM_BRANCH=${BRANCH_FROM}" >> $GITHUB_ENV
+      - name: Open Pull Request
+        uses: vsoch/pull-request-action@1.0.12
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: "main"
