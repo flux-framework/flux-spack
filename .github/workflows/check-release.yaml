@@ -21,9 +21,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Found new version ${version}"
-          ::group::{flux-core package.py}
+          echo "::group::flux-core package.py"
           cat packages/flux-core/package.py
-          ::endgroup::          
+          echo "::endgroup::"          
           export BRANCH_FROM="release/${version}"
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git branch
