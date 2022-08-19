@@ -1,7 +1,10 @@
 name: Test Build
 
 on:
-  pull_request: []
+  pull_request:
+    paths:
+      - 'packages/**'
+
   schedule:
     - cron:  '0 4 * * *'  
 
