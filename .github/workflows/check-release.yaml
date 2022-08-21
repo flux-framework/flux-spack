@@ -82,6 +82,7 @@ jobs:
           fi
           echo "PULL_REQUEST_FROM_BRANCH=${BRANCH_FROM}" >> $GITHUB_ENV
       - name: Open Pull Request
+        if: steps.check.outputs.version != ''
         uses: vsoch/pull-request-action@1.0.12
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
