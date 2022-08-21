@@ -99,12 +99,14 @@ def main(package_dir):
     version = read_file(version_file).strip("\n")
     print(f"Current version is {version}")
     latest = get_latest_release(package)
-    if latest["tag_name"] == version:
+    tag = latest["tag_name"]
+
+    # Some versions are prefixed with v
+    if tag == version or tag == f"v{version}":
         print("No new version found.")
         return
-    print(f"New version {latest['tag_name']} detected!")
+    print(f"New version {tag} detected!")
     update_package(package_dir, latest)
-    tag = latest["tag_name"]
     print(f"::set-output name=version::{tag}")
 
 
