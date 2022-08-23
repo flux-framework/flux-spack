@@ -1,5 +1,7 @@
 # Flux Spack
 
+**NOTE** this will soon be deprecated in favor of [https://github.com/flux-framework/spack/](https://github.com/flux-framework/spack/), which has the same content alongside a spack install on the develop branch. Actions have been disabled here.
+
 This is a testing repository for ideas to:
 
 1. Perform automated builds at some frequency to ensure flux packages build with spack
